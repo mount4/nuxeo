@@ -27,7 +27,9 @@ import org.nuxeo.runtime.service.TimestampedService;
 import org.osgi.framework.BundleException;
 
 /**
- * Service tracking reload related events or commands when installing a package
+ * Service tracking reload related events or commands when installing a package.
+ * <p />
+ * WARNING: This interface is used by reflection in org.nuxeo.runtime.tomcat.dev.ReloadServiceInvoker.
  *
  * @author <a href="mailto:bs@nuxeo.com">Bogdan Stefanescu</a>
  */
@@ -117,30 +119,85 @@ public interface ReloadService extends TimestampedService {
      * Deploys bundle to the runtime, without reloading resources.
      *
      * @since 5.5
-     * @see #deployBundle(File, boolean)
+     * @see #deployBundles(File[], boolean)
      */
-    String deployBundle(File file) throws BundleException;
+    default void deployBundle(File file) throws BundleException {
+        deployBundle(file, false);
+    }
 
     /**
      * Deploys bundle to the runtime, gives possibility to control resources reloading.
      *
      * @since 5.5
+     * @see #deployBundles(File[], boolean)
      */
-    String deployBundle(File file, boolean reloadResources) throws BundleException;
+    default void deployBundle(File file, boolean reloadResources) throws BundleException {
+        deployBundles(new File[] { file }, reloadResources);
+    }
+
+    /**
+     * Deploys bundles to the runtime, without reloading resources.
+     *
+     * @since 9.3
+     * @see #deployBundles(File[], boolean)
+     */
+    default void deployBundles(File[] files) throws BundleException {
+        deployBundles(files, false);
+    }
+
+    /**
+     * Deploys bundles to the runtime, gives possibility to control resources reloading.
+     *
+     * @since 9.3
+     */
+    void deployBundles(File[] files, boolean reloadResources) throws BundleException;
 
     /**
      * Undeploys bundle from the runtime, given the bundle resource, gives possibility to control resources reloading.
      *
      * @since 5.6
+     * @deprecated since 9.3 use {@link #undeployBundle(String, boolean)} instead.
      */
+    // TODO REVIEW - could we remove this method, no usage found
+    @Deprecated
     void undeployBundle(File file, boolean reloadResources) throws BundleException;
 
     /**
-     * Undeploys bundle from the runtime, given the bundle filename.
+     * Undeploys bundle from the runtime, without reloading resources.
      *
      * @since 5.6
+     * @see #undeployBundles(String[], boolean)
      */
-    void undeployBundle(String bundleName) throws BundleException;
+    default void undeployBundle(String bundleName) throws BundleException {
+        undeployBundle(bundleName, false);
+    }
+
+    /**
+     * Undeploys bundle from the runtime, gives possibility to control resources reloading.
+     *
+     * @since 9.3
+     * @see #undeployBundles(String[], boolean)
+     */
+    default void undeployBundle(String bundleName, boolean reloadResources) throws BundleException {
+        undeployBundles(new String[] { bundleName }, reloadResources);
+    }
+
+    /**
+     * Undeploys bundles from the runtime, without reloading resources.
+     *
+     * @since 9.3
+     * @see #undeployBundles(String[], boolean)
+     */
+    default void undeployBundles(String[] bundleNames) throws BundleException {
+        undeployBundles(bundleNames, false);
+    }
+
+    /**
+     * Undeploys bundles from the runtime, gives possibility to control resources reloading.
+     *
+     * @since 9.3
+     */
+    void undeployBundles(String[] bundleNames, boolean reloadResources) throws BundleException;
 
     /**
      * Runs the deployment preprocessor.

@@ -22,6 +22,7 @@ package org.nuxeo.runtime.reload;
  * Copy of event names as triggered by the ReloadService, to make them available on the web layer.
  *
  * @since 5.6
+ * @deprecated since 9.3 use directly constants from {@link ReloadService}.
  */
 public class ReloadEventNames {
 
