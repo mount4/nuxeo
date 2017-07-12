@@ -121,12 +121,6 @@ public class ReloadComponent extends DefaultComponent implements ReloadService {
     }
 
     @Override
-    public void reloadRepository() throws InterruptedException {
-        log.info("Reload repository");
-        triggerReloadWithNewTransaction(RELOAD_REPOSITORIES_ID);
-    }
-
-    @Override
     public void reloadSeamComponents() {
         log.info("Reload Seam components");
         Framework.getLocalService(EventService.class)
