@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<component name="org.nuxeo.runtime.hot-reload.scripting">
+  <require>org.nuxeo.runtime.started</require>
+
+  <extension target="org.nuxeo.automation.scripting.internals.AutomationScriptingComponent" point="operation">
+    <scriptedOperation id="Service.HotReload">
+      <inputType>void</inputType>
+      <outputType>void</outputType>
+      <category>javascript</category>
+      <script>
+        <![CDATA[
+          function run(input, params) {
+            return @{org.nuxeo.runtime.api.Framework.getService(org.nuxeo.runtime.model.ComponentManager).isStarted()}
+          }
+        ]]></script>
+    </scriptedOperation>
+  </extension>
+
+</component>

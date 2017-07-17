@@ -120,6 +120,7 @@ public class OSGiComponentLoader implements SynchronousBundleListener {
                 break;
             }
         } catch (RuntimeException e) {
+            // TODO review: should we throw the exception ? this will allow to break dev hotreload properly (and tests)
             log.error(e, e);
         }
     }
