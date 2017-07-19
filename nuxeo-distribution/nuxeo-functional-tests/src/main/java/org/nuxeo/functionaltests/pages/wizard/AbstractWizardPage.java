@@ -40,16 +40,16 @@ public abstract class AbstractWizardPage extends AbstractPage {
         return title.getText().trim();
     }
 
-    protected abstract String getNextButtonLocator();
+    protected abstract By getNextButtonLocator();
 
-    protected abstract String getPreviousButtonLocator();
+    protected abstract By getPreviousButtonLocator();
 
     public <T extends AbstractWizardPage> T next(Class<T> wizardPageClass) {
         return next(wizardPageClass, null);
     }
 
     public <T extends AbstractWizardPage> T next(Class<T> wizardPageClass, Function<WebDriver, Boolean> function) {
-        WebElement buttonNext = findElementWithTimeout(By.xpath(getNextButtonLocator()));
+        WebElement buttonNext = findElementWithTimeout(getNextButtonLocator());
         String URLbefore = driver.getCurrentUrl();
         buttonNext.click();
         if (function == null) {
@@ -65,7 +65,7 @@ public abstract class AbstractWizardPage extends AbstractPage {
     }
 
     public <T extends AbstractWizardPage> T previous(Class<T> wizardPageClass, Function<WebDriver, Boolean> function) {
-        WebElement buttonPrev = findElementWithTimeout(By.xpath(getPreviousButtonLocator()));
+        WebElement buttonPrev = findElementWithTimeout(getPreviousButtonLocator());
         String URLbefore = driver.getCurrentUrl();
         buttonPrev.click();
         if (function == null) {
