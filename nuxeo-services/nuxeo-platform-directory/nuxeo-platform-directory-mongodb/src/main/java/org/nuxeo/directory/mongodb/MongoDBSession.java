@@ -78,10 +78,10 @@ public class MongoDBSession extends BaseSession {
 
     protected String countersCollectionName;
 
-    public MongoDBSession(MongoDBDirectory directory) {
+    public MongoDBSession(MongoDBDirectory directory, MongoClient client) {
         super(directory, MongoDBReference.class);
         MongoDBDirectoryDescriptor desc = directory.getDescriptor();
-        client = MongoDBConnectionHelper.newMongoClient(desc.getServerUrl());
+        this.client = client;
         dbName = desc.getDatabaseName();
         countersCollectionName = directory.getCountersCollectionName();
     }
@@ -315,7 +315,6 @@ public class MongoDBSession extends BaseSession {
 
     @Override
     public void close() throws DirectoryException {
-        client.close();
         getDirectory().removeSession(this);
     }
 
